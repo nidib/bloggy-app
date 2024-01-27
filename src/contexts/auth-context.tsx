@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { ReactNode, createContext, useContext, useState } from 'react';
 
-const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
+import { loginGateway } from '../gateways/login-gateway';
 
 type AuthAuthContext = {
 	isLoggedIn: boolean;
@@ -14,21 +14,27 @@ const AuthContext = createContext<null | AuthAuthContext>(null);
 
 export function AuthContextProvider(props: { children: ReactNode }) {
 	const [loading, setLoading] = useState(false);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [token, setToken] = useState<null | string>(null);
+	const isLoggedIn = Boolean(token);
 
-	const login = async (_username: string, _password: string) => {
+	const login = useCallback(async (username: string, password: string) => {
 		setLoading(true);
-		await sleep(2000);
-		setLoading(false);
-		setIsLoggedIn(true);
-	};
+		return loginGateway({ username, password })
+			.then(userToken => {
+				console.log(userToken);
+				setToken(userToken);
+			})
+			.catch(e => {
+				throw e;
+			})
+			.finally(() => {
+				setLoading(false);
+			});
+	}, []);
 
-	const logout = async () => {
-		setLoading(true);
-		await sleep(2000);
-		setLoading(false);
-		setIsLoggedIn(false);
-	};
+	const logout = useCallback(async () => {
+		setToken(null);
+	}, []);
 
 	return (
 		<AuthContext.Provider value={{ isLoggedIn, login, logout, authing: loading }}>

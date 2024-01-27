@@ -2,8 +2,8 @@ import React from 'react';
 
 import { StackScreenProps, createStackNavigator } from '@react-navigation/stack';
 
-import { LoginPage } from '../pages/login-page';
-import { SignupPage } from '../pages/signup-page';
+import { LoginPage } from '../pages/public/login/login-page';
+import { SignupPage } from '../pages/public/signup/signup-page';
 
 type PublicPagesStack = {
 	Login: undefined;
