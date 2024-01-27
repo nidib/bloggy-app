@@ -6,7 +6,7 @@ module.exports = {
 	bracketSpacing: true,
 	arrowParens: 'avoid',
 	printWidth: 120,
-	importOrder: ['<THIRD_PARTY_MODULES>', '^src/(.*)$'],
+	importOrder: ['^(react|react-native)$', '<THIRD_PARTY_MODULES>', '^[./]'],
 	importOrderSeparation: true,
 	importOrderSortSpecifiers: true,
 	importOrderGroupNamespaceSpecifiers: true,
