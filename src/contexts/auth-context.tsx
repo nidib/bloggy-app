@@ -2,6 +2,8 @@ import React, { useCallback } from 'react';
 import { ReactNode, createContext, useContext, useState } from 'react';
 
 import { loginGateway } from '../gateways/login-gateway';
+import { StorageKeyEnum } from '../utils/hooks/storage';
+import { useStorage } from '../utils/hooks/use-storage';
 
 type AuthAuthContext = {
 	isLoggedIn: boolean;
@@ -14,27 +16,30 @@ const AuthContext = createContext<null | AuthAuthContext>(null);
 
 export function AuthContextProvider(props: { children: ReactNode }) {
 	const [loading, setLoading] = useState(false);
-	const [token, setToken] = useState<null | string>(null);
+	const [token, setToken] = useStorage(StorageKeyEnum.BLOGGY_API_TOKEN, null);
 	const isLoggedIn = Boolean(token);
 
-	const login = useCallback(async (username: string, password: string) => {
-		setLoading(true);
-		return loginGateway({ username, password })
-			.then(userToken => {
-				console.log(userToken);
-				setToken(userToken);
-			})
-			.catch(e => {
-				throw e;
-			})
-			.finally(() => {
-				setLoading(false);
-			});
-	}, []);
+	const login = useCallback(
+		async (username: string, password: string) => {
+			setLoading(true);
+			return loginGateway({ username, password })
+				.then(userToken => {
+					console.log(userToken);
+					setToken(userToken);
+				})
+				.catch(e => {
+					throw e;
+				})
+				.finally(() => {
+					setLoading(false);
+				});
+		},
+		[setToken]
+	);
 
 	const logout = useCallback(async () => {
 		setToken(null);
-	}, []);
+	}, [setToken]);
 
 	return (
 		<AuthContext.Provider value={{ isLoggedIn, login, logout, authing: loading }}>
