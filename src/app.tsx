@@ -1,28 +1,35 @@
+import React from 'react';
+
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Layout, Toggle } from '@ui-kitten/components';
-import React, { useState } from 'react';
-import { StyleSheet, useColorScheme } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+
+import { AuthContextProvider, useAuthContext } from './contexts/auth-context';
+import { PrivateRoutes } from './routes/private-routes';
+import { PublicRoutes } from './routes/public-routes';
+import { default as light } from './theme/light.json';
+import { default as mapping } from './theme/mapping.json';
 
 export function App() {
-	const [toggle, setToggle] = useState(false);
-	const isDarkMode = useColorScheme() === 'dark';
-	const avaTheme = isDarkMode ? eva.dark : eva.light;
+	const theme = { ...eva.light, ...light };
 
 	return (
-		<ApplicationProvider {...eva} theme={avaTheme}>
-			<Layout style={styles.pageContainer}>
-				<Toggle checked={toggle} onChange={setToggle}>
-					henlo wold
-				</Toggle>
-			</Layout>
-		</ApplicationProvider>
+		<>
+			<IconRegistry icons={EvaIconsPack} />
+			<ApplicationProvider {...eva} customMapping={mapping as any} theme={theme}>
+				<NavigationContainer>
+					<AuthContextProvider>
+						<Routes />
+					</AuthContextProvider>
+				</NavigationContainer>
+			</ApplicationProvider>
+		</>
 	);
 }
 
-const styles = StyleSheet.create({
-	pageContainer: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-});
+function Routes() {
+	const { isLoggedIn } = useAuthContext();
+
+	return isLoggedIn ? <PrivateRoutes /> : <PublicRoutes />;
+}

@@ -1,0 +1,23 @@
+{
+	"components": {
+		"Button": {
+			"meta": {},
+			"appearances": {
+				"ghost": {
+					"mapping": {},
+					"variantGroups": {
+						"status": {
+							"primary": {
+								"state": {
+									"disabled": {
+										"backgroundColor": "transparent"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
