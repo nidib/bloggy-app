@@ -3,5 +3,3 @@ export const StorageKeyEnum = {
 } as const;
 
 export type StorageKey = (typeof StorageKeyEnum)[keyof typeof StorageKeyEnum];
-
-export type StorageValue = string | null;

@@ -10,7 +10,7 @@ export const bloggyApi = axios.create({
 	baseURL: getApiBaseUrl(),
 });
 
-export function getBloggyApiErrorMessage(e: any): null | string {
+export function getBloggyApiErrorMessage<T>(e: T): string {
 	if (e instanceof AxiosError) {
 		const message = e.response?.data.message;
 
@@ -20,4 +20,10 @@ export function getBloggyApiErrorMessage(e: any): null | string {
 	}
 
 	return UNCAUGHT_ERROR_MESSAGE;
+}
+
+export function makePrivateResourceHeaders(token: string) {
+	return {
+		['Authorization']: `Bearer ${token}`,
+	};
 }

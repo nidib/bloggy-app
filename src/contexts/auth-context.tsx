@@ -16,15 +16,14 @@ const AuthContext = createContext<null | AuthAuthContext>(null);
 
 export function AuthContextProvider(props: { children: ReactNode }) {
 	const [loading, setLoading] = useState(false);
-	const [token, setToken] = useStorage(StorageKeyEnum.BLOGGY_API_TOKEN, null);
-	const isLoggedIn = Boolean(token);
+	const [token, setToken] = useStorage<string | null>(StorageKeyEnum.BLOGGY_API_TOKEN, null);
+	const isLoggedIn = Boolean(token && !loading);
 
 	const login = useCallback(
 		async (username: string, password: string) => {
 			setLoading(true);
 			return loginGateway({ username, password })
 				.then(userToken => {
-					console.log(userToken);
 					setToken(userToken);
 				})
 				.catch(e => {

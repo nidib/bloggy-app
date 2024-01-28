@@ -6,6 +6,7 @@ import { Button, Input, Layout, Text } from '@ui-kitten/components';
 import { Controller, useForm } from 'react-hook-form';
 
 import { EyeIndicatorIcon } from '../../../components/icons/eye-indicator-icon';
+import { useAuthContext } from '../../../contexts/auth-context';
 import { createUserGateway } from '../../../gateways/create-user-gateway';
 import { PublicPagesStackProps } from '../../../routes/public-routes';
 import { SignupSchema, signupSchema } from './signup-schema';
@@ -13,6 +14,7 @@ import { SignupSchema, signupSchema } from './signup-schema';
 type Props = PublicPagesStackProps<'Signup'> & {};
 
 export function SignupPage(props: Props) {
+	const { login } = useAuthContext();
 	const [shouldHidePassword, setShouldHidePassword] = useState(true);
 	const { handleSubmit, control } = useForm<SignupSchema>({
 		resolver: zodResolver(signupSchema),
@@ -36,7 +38,7 @@ export function SignupPage(props: Props) {
 	const signup = ({ fullName, username, password }: SignupSchema) => {
 		Keyboard.dismiss();
 		createUserGateway({ username, password, fullName })
-			.then(console.log)
+			.then(() => login(username, password))
 			.catch(message => {
 				Alert.alert('Ops!', message);
 			});

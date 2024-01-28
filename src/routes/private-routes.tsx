@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { StackScreenProps, createStackNavigator } from '@react-navigation/stack';
+import { StackNavigationOptions, StackScreenProps, createStackNavigator } from '@react-navigation/stack';
 
-import { HomePage } from '../pages/private/home-page';
+import { HomeTabs } from './home-tabs';
 
 type PrivatePagesStack = {
 	Home: undefined;
@@ -10,12 +10,14 @@ type PrivatePagesStack = {
 
 const Stack = createStackNavigator<PrivatePagesStack>();
 
+const options: StackNavigationOptions = { headerShown: false };
+
 export type PrivatePagesStackProps<T extends keyof PrivatePagesStack> = StackScreenProps<PrivatePagesStack, T>;
 
 export function PrivateRoutes() {
 	return (
-		<Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
-			<Stack.Screen name="Home" component={HomePage} />
+		<Stack.Navigator screenOptions={options}>
+			<Stack.Screen name="Home" component={HomeTabs} />
 		</Stack.Navigator>
 	);
 }

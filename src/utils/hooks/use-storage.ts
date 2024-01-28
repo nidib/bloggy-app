@@ -1,13 +1,13 @@
 import { MMKVLoader, create } from 'react-native-mmkv-storage';
 
-import { StorageKey, StorageValue } from './storage';
+import { StorageKey } from './storage';
 
 const MMKV = new MMKVLoader().initialize();
 
 const useMMKV = create(MMKV);
 
-export function useStorage(key: StorageKey, defaultValue: StorageValue) {
-	const [a, setA] = useMMKV<StorageValue>(key, defaultValue);
+export function useStorage<T>(key: StorageKey, defaultValue: T) {
+	const [a, setA] = useMMKV<T>(key, defaultValue);
 
 	return [a, setA] as const;
 }
