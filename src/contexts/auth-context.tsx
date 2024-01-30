@@ -8,6 +8,7 @@ import { useStorage } from '../utils/hooks/use-storage';
 type AuthAuthContext = {
 	isLoggedIn: boolean;
 	authing: boolean;
+	token: string | null;
 	login: (username: string, password: string) => Promise<void>;
 	logout: () => Promise<void>;
 };
@@ -41,7 +42,7 @@ export function AuthContextProvider(props: { children: ReactNode }) {
 	}, [setToken]);
 
 	return (
-		<AuthContext.Provider value={{ isLoggedIn, login, logout, authing: loading }}>
+		<AuthContext.Provider value={{ isLoggedIn, login, logout, token, authing: loading }}>
 			{props.children}
 		</AuthContext.Provider>
 	);

@@ -7,8 +7,8 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 import { AuthContextProvider, useAuthContext } from './contexts/auth-context';
-import { PrivateRoutes } from './routes/private-routes';
-import { PublicRoutes } from './routes/public-routes';
+import { PrivateRoutes } from './pages/private/_private-routes';
+import { PublicRoutes } from './pages/public/public-routes';
 import { default as light } from './theme/light.json';
 import { default as mapping } from './theme/mapping.json';
 

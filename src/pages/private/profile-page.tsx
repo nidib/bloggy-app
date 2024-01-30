@@ -1,66 +1,76 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { useQuery } from '@tanstack/react-query';
-import { Button, Layout, Spinner, Text } from '@ui-kitten/components';
+import { Icon, Text } from '@ui-kitten/components';
 
+import { Header } from '../../components/layouts/header';
+import { Page } from '../../components/layouts/page';
 import { useAuthContext } from '../../contexts/auth-context';
 import { getUserInfoGateway } from '../../gateways/get-user-info-gateway';
-import { useStorage } from '../../utils/hooks/use-storage';
 
 function useUserInfo(token: string | null) {
-	const { data, isPending } = useQuery({
+	const { data: userInfo } = useQuery({
 		queryKey: ['USER_INFO', token],
 		queryFn: () => getUserInfoGateway(token as string),
 		retry: false,
 		enabled: Boolean(token),
 	});
 
-	return { data, isPending } as const;
+	return { userInfo } as const;
 }
 
 export function ProfilePage() {
 	const { logout } = useAuthContext();
-	const [token] = useStorage('BLOGGY_API_TOKEN', null);
-	const { data, isPending } = useUserInfo(token);
+	const { token } = useAuthContext();
+	const { userInfo } = useUserInfo(token);
 
 	const handleLogout = async () => {
 		await logout();
 	};
 
 	return (
-		<Layout>
-			<SafeAreaView>
-				<View style={styles.page}>
-					{isPending ? (
-						<View style={styles.spinner}>
-							<Spinner />
-						</View>
-					) : (
-						<>
-							<Text category="h1">{data?.fullName}</Text>
-							<Button size="large" onPress={handleLogout}>
-								SAIR
-							</Button>
-						</>
-					)}
+		<Page>
+			<Header
+				title="Conta"
+				rightContent={
+					<TouchableOpacity
+						hitSlop={10}
+						onPress={() =>
+							Alert.alert(
+								'Tem certeza que deseja sair?',
+								'Se confirmar, terá que fazer login novamente para acessar',
+								[
+									{ text: 'Sim', isPreferred: true, onPress: handleLogout },
+									{ text: 'Cancelar', isPreferred: false },
+								]
+							)
+						}
+					>
+						<Icon name="log-out-outline" style={styles.logoutIcon} />
+					</TouchableOpacity>
+				}
+			/>
+			{userInfo && (
+				<View style={styles.spaceBetween}>
+					<View>
+						<Text category="h6">
+							USERNAME: <Text category="s1">{userInfo.fullName}</Text>
+						</Text>
+					</View>
 				</View>
-			</SafeAreaView>
-		</Layout>
+			)}
+		</Page>
 	);
 }
 
 const styles = StyleSheet.create({
-	page: {
-		height: '100%',
-		width: '100%',
-		paddingHorizontal: 40,
-		paddingVertical: 40,
+	spaceBetween: {
+		flex: 1,
 		justifyContent: 'space-between',
 	},
-	spinner: {
-		flex: 1,
-		justifyContent: 'center',
-		alignSelf: 'center',
+	logoutIcon: {
+		width: 30,
+		height: 30,
 	},
 });

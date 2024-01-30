@@ -9,6 +9,7 @@ type GetUserInfoResponse = {
 
 export async function getUserInfoGateway(token: string) {
 	try {
+		console.log(token);
 		const { data } = await bloggyApi.get<GetUserInfoResponse>('/user', {
 			headers: makePrivateResourceHeaders(token),
 		});
