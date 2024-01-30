@@ -7,7 +7,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 import { EyeIndicatorIcon } from '../../../components/icons/eye-indicator-icon';
 import { useAuthContext } from '../../../contexts/auth-context';
-import { PublicPagesStackProps } from '../../../routes/public-routes';
+import { PublicPagesStackProps } from '../public-routes';
 import { LoginSchema, loginSchema } from './login-schema';
 
 type Props = PublicPagesStackProps<'Login'> & {};
