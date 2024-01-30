@@ -18,6 +18,7 @@ type Props = {
 
 export function ArticleCard(props: Props) {
 	const creationDistance = formatDistanceStrict(props.createdAt, new Date(), { addSuffix: true, locale: ptBR });
+	const authorFirstLetterOfName = props.author.fullName[0];
 
 	return (
 		<TouchableOpacity style={styles.card} onPress={() => props.onCardPress(props.id)}>
@@ -29,7 +30,7 @@ export function ArticleCard(props: Props) {
 			</View>
 			<View style={styles.bottomRow}>
 				<TouchableOpacity style={styles.info} onPress={() => props.onAuthorPress(props.author.id)}>
-					<Avatar letter={props.author.fullName[0]} size="small" />
+					<Avatar letter={authorFirstLetterOfName} size="small" />
 					<View style={styles.details}>
 						<Text category="s1" appearance="hint">
 							{props.author.fullName}

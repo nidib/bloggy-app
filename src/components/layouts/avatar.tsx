@@ -19,7 +19,7 @@ export function Avatar(props: Props) {
 	};
 
 	return (
-		<View style={[styles.avatar, sizeStyles]}>
+		<View style={[styles.avatar, sizeStyles]} accessibilityRole="image" accessible>
 			<Text category={categoryBySize[size]} style={styles.avatarLetter}>
 				{props.letter}
 			</Text>
