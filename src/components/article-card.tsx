@@ -12,7 +12,8 @@ type Props = {
 	title: string;
 	author: { fullName: string; id: string };
 	createdAt: string;
-	goToAuthorArticles: (authorId: string) => void;
+	onCardPress: (articleId: string) => void;
+	onAuthorPress: (authorId: string) => void;
 	onBookmarkPress: () => void;
 };
 
@@ -20,7 +21,7 @@ export function ArticleCard(props: Props) {
 	const creationDistance = formatDistanceStrict(props.createdAt, new Date(), { addSuffix: true, locale: ptBR });
 
 	return (
-		<TouchableOpacity style={styles.card} onPress={() => console.log('pai')}>
+		<TouchableOpacity style={styles.card} onPress={() => props.onCardPress(props.id)}>
 			<View style={styles.topRow}>
 				<Text category="h5" style={styles.title}>
 					{props.title}
@@ -28,7 +29,7 @@ export function ArticleCard(props: Props) {
 				<Icon name="chevron-right-outline" style={styles.chevron} />
 			</View>
 			<View style={styles.bottomRow}>
-				<TouchableOpacity style={styles.info} onPress={() => props.goToAuthorArticles(props.author.id)}>
+				<TouchableOpacity style={styles.info} onPress={() => props.onAuthorPress(props.author.id)}>
 					<Avatar letter={props.author.fullName[0]} size="small" />
 					<View style={styles.details}>
 						<Text category="s1" appearance="hint">

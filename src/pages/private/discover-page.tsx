@@ -62,7 +62,8 @@ export function DiscoverPage() {
 									title={article.title}
 									author={article.user}
 									createdAt={article.createdAt}
-									goToAuthorArticles={console.log}
+									onCardPress={console.log}
+									onAuthorPress={console.log}
 									onBookmarkPress={() => console.log(new Date())}
 								/>
 								<Divider style={styles.divider} />
