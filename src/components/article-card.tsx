@@ -14,7 +14,6 @@ type Props = {
 	createdAt: string;
 	onCardPress: (articleId: string) => void;
 	onAuthorPress: (authorId: string) => void;
-	onBookmarkPress: () => void;
 };
 
 export function ArticleCard(props: Props) {
