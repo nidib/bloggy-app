@@ -25,3 +25,6 @@ jobs:
 
             - name: Compile
               run: npm run compile
+
+            - name: Test
+              run: npm run test
