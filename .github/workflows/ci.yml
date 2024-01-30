@@ -13,15 +13,15 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: Setup node version
-                uses: actions/setup-node@v3
-                with:
-                    node-version: '20.9.0'
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '20.9.0'
 
             - name: Install dependencies
-                run: npm install
+              run: npm install
 
             - name: Lint
-                run: npm run lint
+              run: npm run lint
 
             - name: Compile
-                run: npm run compile
+              run: npm run compile
