@@ -6,7 +6,8 @@ import { StackNavigationOptions, StackScreenProps, createStackNavigator } from '
 import { Layout } from '@ui-kitten/components';
 
 import { BookmarksTabIcon, CreationsTabIcon, DiscoverTabIcon, ProfileTabIcon } from '../../components/icons/tabs-icons';
-import { DiscoverPage } from './discover-page';
+import { useAuthContext } from '../../contexts/auth-context';
+import { ArticleStack } from './_article-stack';
 import { ProfilePage } from './profile-page';
 
 type PrivatePagesStack = {
@@ -48,15 +49,17 @@ const Tab = createBottomTabNavigator<PrivateTabs>();
 export type PrivateTabsProps<T extends keyof PrivateTabs> = StackScreenProps<PrivateTabs, T>;
 
 function PrivateTabs() {
+	const { userId } = useAuthContext();
+
 	return (
 		<Layout style={styles.page}>
 			<Tab.Navigator screenOptions={bottomTabNavigationOptions} initialRouteName="Discover">
 				<Tab.Screen
 					name="Discover"
-					component={DiscoverPage}
 					options={{
 						tabBarIcon: DiscoverTabIcon,
 					}}
+					component={ArticleStack}
 				/>
 				<Tab.Screen
 					name="Bookmarks"
@@ -67,11 +70,12 @@ function PrivateTabs() {
 				/>
 				<Tab.Screen
 					name="Creations"
-					component={Noop}
 					options={{
 						tabBarIcon: CreationsTabIcon,
 					}}
-				/>
+				>
+					{() => <ArticleStack userId={userId ?? undefined} />}
+				</Tab.Screen>
 				<Tab.Screen
 					name="Profile"
 					component={ProfilePage}

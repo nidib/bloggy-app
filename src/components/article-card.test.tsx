@@ -124,18 +124,18 @@ describe('ArticleCard', () => {
 		expect(onCardPressSpy).toHaveBeenCalledWith(id);
 	});
 
-	it('Should call onAuthorPress with the article id when pressing on the author info', async () => {
-		const id = '332c8361-8da6-453c-95f2-a9e6cf809d31';
+	it('Should call onAuthorPress with the author when pressing on the author info', async () => {
+		const author = {
+			id: '332c8361-8da6-453c-95f2-a9e6cf809d31',
+			fullName: 'John Doe',
+		};
 		const onAuthorPressSpy = jest.fn();
 		render(
 			getComponent({
+				author,
 				id: 'ccae898f-e315-4739-bae9-f7e0ca02fffe',
 				title: 'A necessidade da faculdade para desenvolvedores',
 
-				author: {
-					id,
-					fullName: 'John Doe',
-				},
 				createdAt: new Date().toISOString(),
 				onCardPress: () => {},
 				onAuthorPress: onAuthorPressSpy,
@@ -145,6 +145,6 @@ describe('ArticleCard', () => {
 		fireEvent.press(await screen.findByText('John Doe'));
 
 		expect(onAuthorPressSpy).toHaveBeenCalledTimes(1);
-		expect(onAuthorPressSpy).toHaveBeenCalledWith(id);
+		expect(onAuthorPressSpy).toHaveBeenCalledWith(author);
 	});
 });

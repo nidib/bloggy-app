@@ -1,6 +1,7 @@
 import { bloggyApi, getBloggyApiErrorMessage, makePrivateResourceHeaders } from './_bloggy-api';
 
 export type GetPaginatedFiltersRequestParams = {
+	userId?: string;
 	order: 'asc' | 'desc';
 	page: number;
 };
@@ -26,6 +27,7 @@ export async function getPaginatedArticlesGateway(token: string, filters: GetPag
 			params: {
 				order: filters.order,
 				page: filters.page,
+				user: filters.userId,
 			},
 		});
 

@@ -13,31 +13,42 @@ type Props = {
 	author: { fullName: string; id: string };
 	createdAt: string;
 	onCardPress: (articleId: string) => void;
-	onAuthorPress: (authorId: string) => void;
+	onAuthorPress?: (authorId: Props['author']) => void;
 };
 
 export function ArticleCard(props: Props) {
+	const { id, title, author, onCardPress, onAuthorPress } = props;
 	const creationDistance = formatDistanceStrict(props.createdAt, new Date(), { addSuffix: true, locale: ptBR });
-	const authorFirstLetterOfName = props.author.fullName[0];
+	const [authorFirstLetterOfName] = author.fullName.toUpperCase();
+
+	const authorInfoContent = (
+		<>
+			<Avatar letter={authorFirstLetterOfName} size="small" />
+			<View style={styles.details}>
+				<Text category="s1" appearance="hint">
+					{author.fullName}
+				</Text>
+				<Text appearance="hint">{creationDistance}</Text>
+			</View>
+		</>
+	);
 
 	return (
-		<TouchableOpacity style={styles.card} onPress={() => props.onCardPress(props.id)}>
+		<TouchableOpacity style={styles.card} onPress={() => onCardPress(id)}>
 			<View style={styles.topRow}>
 				<Text category="h5" style={styles.title}>
-					{props.title}
+					{title}
 				</Text>
 				<Icon name="chevron-right-outline" style={styles.chevron} />
 			</View>
 			<View style={styles.bottomRow}>
-				<TouchableOpacity style={styles.info} onPress={() => props.onAuthorPress(props.author.id)}>
-					<Avatar letter={authorFirstLetterOfName} size="small" />
-					<View style={styles.details}>
-						<Text category="s1" appearance="hint">
-							{props.author.fullName}
-						</Text>
-						<Text appearance="hint">{creationDistance}</Text>
-					</View>
-				</TouchableOpacity>
+				{onAuthorPress ? (
+					<TouchableOpacity style={styles.info} onPress={() => onAuthorPress(author)}>
+						{authorInfoContent}
+					</TouchableOpacity>
+				) : (
+					<View style={styles.info}>{authorInfoContent}</View>
+				)}
 			</View>
 		</TouchableOpacity>
 	);
