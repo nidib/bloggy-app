@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
+import { useFocusEffect } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import { Divider } from '@ui-kitten/components';
@@ -49,6 +50,12 @@ export function DiscoverPage(props: ArticleStackProps<'ArticleList'>) {
 
 		return 'Descubra';
 	}, [filteredByUser, headerTitle, userId]);
+
+	useFocusEffect(
+		React.useCallback(() => {
+			refetchArticles();
+		}, [refetchArticles])
+	);
 
 	return (
 		<Page>

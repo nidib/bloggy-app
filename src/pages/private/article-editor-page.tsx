@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Keyboard, ScrollView, StyleSheet, View } from 'react-native';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@ui-kitten/components';
@@ -9,12 +9,14 @@ import { z } from 'zod';
 import { Header } from '../../components/layouts/header';
 import { Page } from '../../components/layouts/page';
 import { TouchableIcon } from '../../components/touchable-icon';
+import { useAuthContext } from '../../contexts/auth-context';
+import { createArticleGateway } from '../../gateways/create-article-gateway';
 import { ArticleStackProps } from './_article-stack';
 
 const createOrEditArticleSchema = z.object({
 	title: z
 		.string()
-		.transform(value => value.replaceAll(' ', ''))
+		.transform(value => value.trim())
 		.pipe(
 			z
 				.string()
@@ -23,7 +25,7 @@ const createOrEditArticleSchema = z.object({
 		),
 	content: z
 		.string()
-		.transform(value => value.replaceAll(' ', ''))
+		.transform(value => value.trim())
 		.pipe(z.string().min(1, { message: 'Campo obrigatório' })),
 });
 
@@ -32,6 +34,9 @@ type CreateOrEditArticleSchema = z.infer<typeof createOrEditArticleSchema>;
 type Props = ArticleStackProps<'ArticleEditor'>;
 
 export function ArticleEditorPage(props: Props) {
+	const { navigation, route } = props;
+	const { articleId } = route.params ?? {};
+	const { token } = useAuthContext();
 	const { handleSubmit, control } = useForm<CreateOrEditArticleSchema>({
 		resolver: zodResolver(createOrEditArticleSchema),
 		defaultValues: {
@@ -41,8 +46,29 @@ export function ArticleEditorPage(props: Props) {
 	});
 	const isEditing = Boolean(props.route.params?.articleId);
 
-	const submitArticle = (formState: CreateOrEditArticleSchema) => {
-		console.log(formState);
+	const submitArticle = async (formState: CreateOrEditArticleSchema) => {
+		const article = { title: formState.title, content: formState.content };
+
+		Alert.alert('Pronto para publicar?', undefined, [
+			{
+				text: 'Sim',
+				isPreferred: true,
+				onPress: async () => {
+					if (!articleId) {
+						return createArticleGateway(token as string, article)
+							.then(() => {
+								navigation.navigate('ArticleList', {});
+							})
+							.catch(() => {
+								Alert.alert('Algo deu errado');
+							});
+					}
+
+					// TODO: Update an existing article
+				},
+			},
+			{ text: 'Não', isPreferred: false },
+		]);
 	};
 
 	return (
