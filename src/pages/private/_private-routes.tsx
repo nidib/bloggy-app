@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StackNavigationOptions, StackScreenProps, createStackNavigator } from '@react-navigation/stack';
@@ -30,7 +30,6 @@ export function PrivateRoutes() {
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
 	headerShown: false,
-	tabBarBackground: () => <View style={styles.tabBarBackground} />,
 	tabBarShowLabel: false,
 	tabBarStyle: {
 		height: 90,
@@ -91,11 +90,6 @@ function PrivateTabs() {
 const styles = StyleSheet.create({
 	page: {
 		flex: 1,
-	},
-	tabBarBackground: {
-		flex: 1,
-		borderTopWidth: 1,
-		borderColor: 'darkgrey',
 	},
 });
 
