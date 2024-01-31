@@ -1,4 +1,4 @@
-import React, { PropsWithoutRef } from 'react';
+import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { Icon, Text } from '@ui-kitten/components';
@@ -16,7 +16,7 @@ type Props = {
 	onAuthorPress?: (authorId: Props['author']) => void;
 };
 
-export function ArticleCard(props: PropsWithoutRef<Props>) {
+export function ArticleCard(props: Props) {
 	const { id, title, author, onCardPress, onAuthorPress } = props;
 	const creationDistance = formatDistanceStrict(props.createdAt, new Date(), { addSuffix: true, locale: ptBR });
 	const [authorFirstLetterOfName] = author.fullName.toUpperCase();
