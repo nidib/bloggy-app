@@ -9,6 +9,7 @@ type AuthAuthContext = {
 	isLoggedIn: boolean;
 	authing: boolean;
 	token: string | null;
+	userId: string | null;
 	login: (username: string, password: string) => Promise<void>;
 	logout: () => Promise<void>;
 };
@@ -18,14 +19,16 @@ const AuthContext = createContext<null | AuthAuthContext>(null);
 export function AuthContextProvider(props: { children: ReactNode }) {
 	const [loading, setLoading] = useState(false);
 	const [token, setToken] = useStorage<string | null>(StorageKeyEnum.BLOGGY_API_TOKEN, null);
+	const [userId, setUserId] = useStorage<string | null>(StorageKeyEnum.LOGGED_USER_ID, null);
 	const isLoggedIn = Boolean(token && !loading);
 
 	const login = useCallback(
 		async (username: string, password: string) => {
 			setLoading(true);
 			return loginGateway({ username, password })
-				.then(userToken => {
-					setToken(userToken);
+				.then(data => {
+					setToken(data.token);
+					setUserId(data.userId);
 				})
 				.catch(e => {
 					throw e;
@@ -34,15 +37,16 @@ export function AuthContextProvider(props: { children: ReactNode }) {
 					setLoading(false);
 				});
 		},
-		[setToken]
+		[setToken, setUserId]
 	);
 
 	const logout = useCallback(async () => {
 		setToken(null);
-	}, [setToken]);
+		setUserId(null);
+	}, [setToken, setUserId]);
 
 	return (
-		<AuthContext.Provider value={{ isLoggedIn, login, logout, token, authing: loading }}>
+		<AuthContext.Provider value={{ isLoggedIn, login, logout, token, userId, authing: loading }}>
 			{props.children}
 		</AuthContext.Provider>
 	);

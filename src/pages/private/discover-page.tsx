@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
 import { FlashList } from '@shopify/flash-list';
@@ -11,14 +11,16 @@ import { Header } from '../../components/layouts/header';
 import { Page } from '../../components/layouts/page';
 import { useAuthContext } from '../../contexts/auth-context';
 import { GetPaginatedFiltersRequestParams, getPaginatedArticlesGateway } from '../../gateways/get-paginated-articles';
+import { ArticleStackProps } from './_article-stack';
 
 function useArticles(token: string | null, filters: GetPaginatedFiltersRequestParams) {
+	const filterValues = Object.values(filters);
 	const {
 		data: articles = [],
 		refetch: refetchArticles,
 		isLoading: isLoadingArticles,
 	} = useQuery({
-		queryKey: ['ARTICLES', token],
+		queryKey: ['ARTICLES', ...filterValues, token],
 		queryFn: () => getPaginatedArticlesGateway(token as string, filters),
 		retry: false,
 		enabled: Boolean(token),
@@ -27,9 +29,26 @@ function useArticles(token: string | null, filters: GetPaginatedFiltersRequestPa
 	return { articles, refetchArticles, isLoadingArticles };
 }
 
-export function DiscoverPage() {
-	const { token } = useAuthContext();
-	const { articles, refetchArticles, isLoadingArticles } = useArticles(token, { order: 'desc', page: 1 });
+export function DiscoverPage(props: ArticleStackProps<'ArticleList'>) {
+	const { userId: filteredByUser, headerTitle } = props.route.params ?? {};
+	const { token, userId } = useAuthContext();
+	const { articles, refetchArticles, isLoadingArticles } = useArticles(token, {
+		userId: filteredByUser,
+		order: 'desc',
+		page: 1,
+	});
+	const isFilteringByTheLoggedUserId = filteredByUser === userId;
+	const pageTitle = useMemo(() => {
+		if (headerTitle) {
+			return headerTitle;
+		}
+
+		if (userId === filteredByUser) {
+			return 'Seus artigos';
+		}
+
+		return 'Descubra';
+	}, [filteredByUser, headerTitle, userId]);
 
 	return (
 		<Page>
@@ -44,11 +63,13 @@ export function DiscoverPage() {
 				}
 			>
 				<Header
-					title="Descubra"
+					title={pageTitle}
 					rightContent={
-						<TouchableOpacity hitSlop={10}>
-							<Icon name="plus-circle-outline" style={styles.addIcon} />
-						</TouchableOpacity>
+						!isFilteringByTheLoggedUserId && (
+							<TouchableOpacity hitSlop={10}>
+								<Icon name="plus-circle-outline" style={styles.addIcon} />
+							</TouchableOpacity>
+						)
 					}
 				/>
 				<View style={styles.articleList}>
@@ -63,7 +84,16 @@ export function DiscoverPage() {
 									author={article.user}
 									createdAt={article.createdAt}
 									onCardPress={console.log}
-									onAuthorPress={console.log}
+									onAuthorPress={
+										article.user.id !== filteredByUser
+											? pressedUser => {
+													props.navigation.push('ArticleList', {
+														userId: pressedUser.id,
+														headerTitle: pressedUser.fullName,
+													});
+											  }
+											: undefined
+									}
 								/>
 								<Divider style={styles.divider} />
 							</View>

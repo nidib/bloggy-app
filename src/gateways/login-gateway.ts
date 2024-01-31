@@ -5,13 +5,15 @@ type Login = {
 	password: string;
 };
 
-export async function loginGateway(login: Login): Promise<string> {
+export async function loginGateway(login: Login): Promise<{ token: string; userId: string }> {
 	try {
 		const { data } = await bloggyApi.post('/login', login);
 
-		return data.token as string;
+		return {
+			token: data.token,
+			userId: data.id,
+		};
 	} catch (e) {
-		console.log(e);
 		const message = getBloggyApiErrorMessage(e);
 
 		throw message;
