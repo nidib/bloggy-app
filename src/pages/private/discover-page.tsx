@@ -3,12 +3,12 @@ import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
-import { Divider, Icon } from '@ui-kitten/components';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Divider } from '@ui-kitten/components';
 
 import { ArticleCard } from '../../components/article-card';
 import { Header } from '../../components/layouts/header';
 import { Page } from '../../components/layouts/page';
+import { TouchableIcon } from '../../components/touchable-icon';
 import { useAuthContext } from '../../contexts/auth-context';
 import { GetPaginatedFiltersRequestParams, getPaginatedArticlesGateway } from '../../gateways/get-paginated-articles';
 import { ArticleStackProps } from './_article-stack';
@@ -66,9 +66,12 @@ export function DiscoverPage(props: ArticleStackProps<'ArticleList'>) {
 					title={pageTitle}
 					rightContent={
 						!isFilteringByTheLoggedUserId && (
-							<TouchableOpacity hitSlop={10}>
-								<Icon name="plus-circle-outline" style={styles.addIcon} />
-							</TouchableOpacity>
+							<TouchableIcon
+								icon="plus-circle-outline"
+								onPress={() => props.navigation.push('ArticleEditor')}
+							>
+								Criar
+							</TouchableIcon>
 						)
 					}
 				/>
@@ -109,7 +112,6 @@ const styles = StyleSheet.create({
 	headingDivider: {
 		marginTop: 20,
 	},
-	addIcon: { width: 30, height: 30 },
 	articleList: {
 		minHeight: 150,
 	},
