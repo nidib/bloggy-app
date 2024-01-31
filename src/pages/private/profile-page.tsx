@@ -53,9 +53,9 @@ export function ProfilePage() {
 			/>
 			{userInfo && (
 				<View style={styles.spaceBetween}>
-					<View>
+					<View style={styles.info}>
 						<Text category="h6">
-							USERNAME: <Text category="s1">{userInfo.fullName}</Text>
+							Nome completo: <Text category="s1">{userInfo.fullName}</Text>
 						</Text>
 					</View>
 				</View>
@@ -72,5 +72,8 @@ const styles = StyleSheet.create({
 	logoutIcon: {
 		width: 30,
 		height: 30,
+	},
+	info: {
+		gap: 10,
 	},
 });
