@@ -8,7 +8,6 @@ import { Layout } from '@ui-kitten/components';
 import { BookmarksTabIcon, CreationsTabIcon, DiscoverTabIcon, ProfileTabIcon } from '../../components/icons/tabs-icons';
 import { useAuthContext } from '../../contexts/auth-context';
 import { ArticleStack } from './_article-stack';
-// import { DiscoverPage } from './discover-page';
 import { ProfilePage } from './profile-page';
 
 type PrivatePagesStack = {
