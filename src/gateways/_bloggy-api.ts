@@ -3,11 +3,8 @@ import axios, { AxiosError } from 'axios';
 
 const UNCAUGHT_ERROR_MESSAGE = 'Algo deu errado';
 
-// Sometimes a pure constante gets undefined, and making it a function apparently solves that issue
-const getApiBaseUrl = () => API_BASE_URL;
-
 export const bloggyApi = axios.create({
-	baseURL: getApiBaseUrl(),
+	baseURL: API_BASE_URL,
 });
 
 export function getBloggyApiErrorMessage<T>(e: T): string {
