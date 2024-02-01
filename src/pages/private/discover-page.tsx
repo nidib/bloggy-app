@@ -6,7 +6,7 @@ import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import { Divider } from '@ui-kitten/components';
 
-import { ArticleCard } from '../../components/article-card';
+import { ArticleCard } from '../../components/article-card/article-card';
 import { Header } from '../../components/layouts/header';
 import { Page } from '../../components/layouts/page';
 import { TouchableIcon } from '../../components/touchable-icon';
@@ -93,7 +93,9 @@ export function DiscoverPage(props: ArticleStackProps<'ArticleList'>) {
 									title={article.title}
 									author={article.user}
 									createdAt={article.createdAt}
-									onCardPress={console.log}
+									onCardPress={articleId => {
+										props.navigation.push('ArticleDetails', { articleId });
+									}}
 									onAuthorPress={
 										article.user.id !== filteredByUser
 											? pressedUser => {

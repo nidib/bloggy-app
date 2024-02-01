@@ -2,6 +2,7 @@ import React from 'react';
 
 import { StackNavigationOptions, StackScreenProps, createStackNavigator } from '@react-navigation/stack';
 
+import { ArticleDetailsPage } from './article-details-page';
 import { ArticleEditorPage } from './article-editor-page';
 import { DiscoverPage } from './discover-page';
 
@@ -22,12 +23,10 @@ export function ArticleStack(props: Props) {
 	const { userId, headerTitle } = props;
 
 	return (
-		<Stack.Navigator screenOptions={stackNavigationOptions}>
+		<Stack.Navigator screenOptions={stackNavigationOptions} initialRouteName="ArticleList">
 			<Stack.Screen name="ArticleList" component={DiscoverPage} initialParams={{ userId, headerTitle }} />
-			<Stack.Screen name="ArticleDetails" component={Noop} />
+			<Stack.Screen name="ArticleDetails" component={ArticleDetailsPage} />
 			<Stack.Screen name="ArticleEditor" component={ArticleEditorPage} />
 		</Stack.Navigator>
 	);
 }
-
-const Noop = () => null;

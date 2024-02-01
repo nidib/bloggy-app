@@ -2,10 +2,8 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { Icon, Text } from '@ui-kitten/components';
-import { formatDistanceStrict } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
-import { Avatar } from './layouts/avatar';
+import { ArticleAuthorTag } from './article-author-tag';
 
 type Props = {
 	id: string;
@@ -17,21 +15,8 @@ type Props = {
 };
 
 export function ArticleCard(props: Props) {
-	const { id, title, author, onCardPress, onAuthorPress } = props;
-	const creationDistance = formatDistanceStrict(props.createdAt, new Date(), { addSuffix: true, locale: ptBR });
-	const [authorFirstLetterOfName] = author.fullName.toUpperCase();
-
-	const authorInfoContent = (
-		<>
-			<Avatar letter={authorFirstLetterOfName} size="small" />
-			<View style={styles.details}>
-				<Text category="s1" appearance="hint">
-					{author.fullName}
-				</Text>
-				<Text appearance="hint">{creationDistance}</Text>
-			</View>
-		</>
-	);
+	const { id, title, author, createdAt, onCardPress, onAuthorPress } = props;
+	const authorInfoContent = <ArticleAuthorTag authorFullName={author.fullName} createdAt={createdAt} />;
 
 	return (
 		<TouchableOpacity style={styles.card} onPress={() => onCardPress(id)}>
@@ -43,11 +28,9 @@ export function ArticleCard(props: Props) {
 			</View>
 			<View style={styles.bottomRow}>
 				{onAuthorPress ? (
-					<TouchableOpacity style={styles.info} onPress={() => onAuthorPress(author)}>
-						{authorInfoContent}
-					</TouchableOpacity>
+					<TouchableOpacity onPress={() => onAuthorPress(author)}>{authorInfoContent}</TouchableOpacity>
 				) : (
-					<View style={styles.info}>{authorInfoContent}</View>
+					<View>{authorInfoContent}</View>
 				)}
 			</View>
 		</TouchableOpacity>
@@ -72,14 +55,6 @@ const styles = StyleSheet.create({
 		width: 40,
 		height: 40,
 		left: 8,
-	},
-	info: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 10,
-	},
-	details: {
-		gap: 2,
 	},
 	bottomRow: {
 		flexDirection: 'row',

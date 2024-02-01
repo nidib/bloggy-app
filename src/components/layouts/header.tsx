@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 	},
 	divider: {
-		height: 1,
 		marginVertical: 20,
 	},
 });
