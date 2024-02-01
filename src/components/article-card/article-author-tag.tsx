@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Text } from '@ui-kitten/components';
@@ -7,14 +7,25 @@ import { ptBR } from 'date-fns/locale';
 
 import { Avatar } from '../layouts/avatar';
 
+const TWO_MINUTES = 1000 * 60 * 2;
+
 type Props = {
 	authorFullName: string;
 	createdAt: string;
 };
 export function ArticleAuthorTag(props: Props) {
 	const { authorFullName } = props;
-	const creationDistance = formatDistanceStrict(props.createdAt, new Date(), { addSuffix: true, locale: ptBR });
+	const [now, setNow] = useState(new Date());
+	const creationDistance = formatDistanceStrict(now, props.createdAt, { addSuffix: false, locale: ptBR });
 	const [authorFirstLetterOfName] = authorFullName.toUpperCase();
+
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setNow(new Date());
+		}, TWO_MINUTES);
+
+		return () => clearInterval(timer);
+	}, []);
 
 	return (
 		<View style={styles.tag}>
@@ -23,7 +34,7 @@ export function ArticleAuthorTag(props: Props) {
 				<Text category="s1" appearance="hint">
 					{authorFullName}
 				</Text>
-				<Text appearance="hint">{creationDistance}</Text>
+				<Text appearance="hint">há {creationDistance}</Text>
 			</View>
 		</View>
 	);

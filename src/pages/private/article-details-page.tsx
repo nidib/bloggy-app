@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { Fragment, useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { useQuery } from '@tanstack/react-query';
@@ -34,12 +34,12 @@ export function ArticleDetailsPage(props: Props) {
 	const { article } = useArticleDetails(token, route.params.articleId);
 	const formattedContent = useMemo(
 		() =>
-			article?.content.split('\\n').map(subStr => {
+			article?.content.split('\\n').map((subStr, idx) => {
 				return (
-					<>
+					<Fragment key={idx}>
 						{subStr}
 						{'\n'}
-					</>
+					</Fragment>
 				);
 			}),
 		[article?.content]
