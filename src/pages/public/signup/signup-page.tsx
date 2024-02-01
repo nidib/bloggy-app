@@ -19,9 +19,9 @@ export function SignupPage(props: Props) {
 	const { handleSubmit, control } = useForm<SignupSchema>({
 		resolver: zodResolver(signupSchema),
 		defaultValues: {
-			fullName: 'Richard Bidin',
-			username: 'nidib',
-			password: 'qwe123',
+			fullName: '',
+			username: '',
+			password: '',
 		},
 	});
 	const passwordIconRenderer = useCallback(

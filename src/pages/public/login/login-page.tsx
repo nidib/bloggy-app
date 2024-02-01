@@ -17,8 +17,8 @@ export function LoginPage(props: Props) {
 	const { handleSubmit, control } = useForm<LoginSchema>({
 		resolver: zodResolver(loginSchema),
 		defaultValues: {
-			username: 'nidib',
-			password: 'qwe123',
+			username: '',
+			password: '',
 		},
 	});
 	const { login, authing } = useAuthContext();
