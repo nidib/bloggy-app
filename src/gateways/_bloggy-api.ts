@@ -4,7 +4,7 @@ import axios, { AxiosError } from 'axios';
 const UNCAUGHT_ERROR_MESSAGE = 'Algo deu errado';
 
 export const bloggyApi = axios.create({
-	baseURL: API_BASE_URL,
+	baseURL: 'https://bloggy-api.richardbidin.dev/',
 });
 
 export function getBloggyApiErrorMessage<T>(e: T): string {
