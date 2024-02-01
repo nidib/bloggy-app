@@ -41,3 +41,15 @@ npm run ios
 # OR using Yarn
 yarn ios
 ```
+
+## Screenshots
+
+### Login screen
+<img src="https://github.com/nidib/bloggy-app/assets/19212953/fdc79fbb-9f21-4639-9a93-1de2585b7de0" width="40%" />
+
+### Home screen
+<img src="https://github.com/nidib/bloggy-app/assets/19212953/84a4e97b-53f1-4c6e-bf3f-ef6f7bb54515" width="40%" />
+
+### Create article screen
+<img src="https://github.com/nidib/bloggy-app/assets/19212953/47abd8c3-4c1d-439a-ad5a-310fc6e485b8" width="40%" />
+
