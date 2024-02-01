@@ -7,6 +7,7 @@ import { Layout } from '@ui-kitten/components';
 
 import { BookmarksTabIcon, CreationsTabIcon, DiscoverTabIcon, ProfileTabIcon } from '../../components/icons/tabs-icons';
 import { useAuthContext } from '../../contexts/auth-context';
+import { ComingSoonPage } from '../coming-soon-page';
 import { ArticleStack } from './_article-stack';
 import { ProfilePage } from './profile-page';
 
@@ -62,7 +63,7 @@ function PrivateTabs() {
 				/>
 				<Tab.Screen
 					name="Bookmarks"
-					component={Noop}
+					component={ComingSoonPage}
 					options={{
 						tabBarIcon: BookmarksTabIcon,
 					}}
@@ -92,5 +93,3 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 });
-
-const Noop = () => null;
