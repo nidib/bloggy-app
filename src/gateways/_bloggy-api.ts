@@ -1,4 +1,3 @@
-import { API_BASE_URL } from '@env';
 import axios, { AxiosError } from 'axios';
 
 const UNCAUGHT_ERROR_MESSAGE = 'Algo deu errado';
